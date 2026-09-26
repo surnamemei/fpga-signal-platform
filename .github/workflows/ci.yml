@@ -1,14 +1,80 @@
 name: verify
-on: [push, pull_request]
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  gate0:
+    name: Gate 0 - golden model and RTL regression
+    # Pinned image: Ubuntu 24.04 ships Icarus Verilog 12.0 and Verilator 5.020, the versions
+    # the regression was verified with. Bump deliberately, not via ubuntu-latest.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHON: python
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
-      - run: sudo apt-get update && sudo apt-get install -y iverilog
-      - run: pip install -e ".[dev]"
-      - run: pytest -q
-      - run: python verification/generate_vectors.py
-      - run: make
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      # The apt package is "iverilog"; cocotb's simulator name for it is SIM=icarus.
+      - name: Install simulators (Icarus Verilog, Verilator)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends iverilog verilator
+
+      - name: Simulator versions
+        run: |
+          iverilog -V 2>&1 | sed -n 1p
+          vvp -V 2>&1 | sed -n 1p
+          verilator --version
+
+      - name: Install Python package (with the pip-installable Yosys for the synthesis check)
+        run: python -m pip install -e ".[dev,synth]"
+
+      - name: Python package versions
+        run: |
+          python --version
+          python -m pip list 2>/dev/null | grep -Ei '^(cocotb|numpy|pytest|yowasp-yosys) '
+
+      - name: Python golden-model tests
+        run: make test
+
+      - name: Generate deterministic vectors (seed 5305, 10,000 samples)
+        run: make vectors
+
+      - name: RTL lint (Verilator -Wall, warnings are errors)
+        run: make lint
+
+      - name: RTL regression (cocotb + Icarus, every coefficient config)
+        run: make rtl SIM=icarus
+
+      - name: Cross-simulator check (SystemVerilog testbench on Icarus and Verilator)
+        run: make xsim
+
+      - name: Mutation testing (every injected RTL bug must be caught)
+        run: make mutation
+
+      - name: Generic synthesis (Yosys, no FPGA part or board)
+        run: make synth
+
+      - name: Upload results and logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: gate0-results
+          path: |
+            verification/vectors.csv
+            sim_build/icarus-*/results.xml
+            sim_build/xsim/*/run.log
+            sim_build/mutants/*/*.log
+            sim_build/synth/*.log
+          if-no-files-found: ignore
+          retention-days: 14

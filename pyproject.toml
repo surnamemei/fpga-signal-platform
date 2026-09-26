@@ -1,12 +1,23 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
+
 [project]
 name = "fpga-signal-platform"
 version = "0.1.0"
+description = "Bit-accurate fixed-point golden model and simulation-verified streaming FIR RTL."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
-dependencies = ["numpy>=2.0"]
+# numpy's Generator stream defines the frozen Gate 0 vectors; tests/test_vectors.py pins their hash.
+dependencies = ["numpy>=2.0,<3"]
+
 [project.optional-dependencies]
-dev = ["pytest>=8", "cocotb>=1.9"]
+# The testbench uses the cocotb 2.x API (LogicArray.to_signed, Clock(unit=...), COCOTB_* make variables).
+dev = ["pytest>=8", "cocotb>=2.0,<3"]
+# Optional: generic Yosys synthesis check (`make synth`), WebAssembly build installable with pip.
+synth = ["yowasp-yosys"]
+
 [tool.setuptools]
 packages = ["fpga_signal"]

@@ -3,6 +3,10 @@ __pycache__/
 *.pyc
 .pytest_cache/
 *.egg-info/
+build/
+dist/
 sim_build/
 results.xml
+*.vcd
+*.fst
 verification/vectors.csv
