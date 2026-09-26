@@ -109,6 +109,7 @@ and reset cycles, so dropped, duplicated, late or X outputs fail. Details are in
 
 1. **Gate 0:** golden model + FIR RTL + sample-by-sample simulation (this repository).
 2. **Gate 1:** inexpensive Artix-7 board only after Gate 0 is closed; UART loop and
-   coefficient/config control, in a separate integration layer.
+   coefficient/config control, in a separate integration layer. The staged bring-up and the
+   Cmod A7-35T versus Basys 3 comparison are in [docs/BOARD_BRINGUP_PLAN.md](docs/BOARD_BRINGUP_PLAN.md).
 3. **Gate 2:** Pmod I2S2 or equivalent only after board streaming is stable; real-time audio path.
 4. **Gate 3:** OpenECE Lab host integration and automated hardware-vs-golden validation.
