@@ -12,6 +12,10 @@ Build a verified real-time signal-processing path that progresses from a bit-acc
 
 ## Hardware gate
 Do not assume a particular board until Gate 1. Keep the DSP RTL board-independent. Board constraints, clocks, UART and I2S belong in separate integration layers.
+The purchase gate is open for the first FPGA development board only (docs/hardware_purchase_gate.md). Instruments, Pmods, custom PCBs and larger boards each need their own gate decision.
+
+## Frozen contract
+FIR contract v1 (docs/fir_contract.md) is frozen at Gate 0 (commit 9c523b6). Do not modify `rtl/fir_stream.sv` unless the change introduces a new contract version with matching reference-model tests.
 
 ## Gate 0 definition
 - 10,000 deterministic Python vectors generated.

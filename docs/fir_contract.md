@@ -1,5 +1,10 @@
 # fir_stream contract, v1
 
+**Status: frozen.** Verified in simulation at commit `9c523b6` (Gate 0, CI
+[run 36228797521](https://github.com/surnamemei/fpga-signal-platform/actions/runs/36228797521); recommended tag `gate0-simulation-verified`). Do not
+modify `rtl/fir_stream.sv` unless the change introduces a new contract version (v2) with matching
+reference-model tests.
+
 `fpga_signal/fir.py` (`fir_fixed`) is the numerical specification. `rtl/fir_stream.sv` must match it
 sample for sample. Any change to a clause below changes the contract version and needs a matching
 reference-model test (AGENTS.md).

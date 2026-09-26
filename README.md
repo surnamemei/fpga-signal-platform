@@ -1,8 +1,8 @@
 # FPGA Signal Platform
 
 Simulation-first real-time DSP project: a bit-accurate Python fixed-point golden model, a
-board-independent SystemVerilog streaming FIR, and a sample-by-sample RTL regression. No hardware
-purchase is justified until the verification path is complete; see
+board-independent SystemVerilog streaming FIR, and a sample-by-sample RTL regression. Gate 0 is
+complete, and the hardware purchase gate is open for the first FPGA development board only; see
 [docs/hardware_purchase_gate.md](docs/hardware_purchase_gate.md).
 
 ## What is here
@@ -107,7 +107,8 @@ and reset cycles, so dropped, duplicated, late or X outputs fail. Details are in
 
 ## Planned gates
 
-1. **Gate 0:** golden model + FIR RTL + sample-by-sample simulation (this repository).
+1. **Gate 0 (complete):** golden model + FIR RTL + sample-by-sample simulation. Verified by CI
+   [run 36228797521](https://github.com/surnamemei/fpga-signal-platform/actions/runs/36228797521) on `9c523b6`; FIR contract v1 is frozen.
 2. **Gate 1:** inexpensive Artix-7 board only after Gate 0 is closed; UART loop and
    coefficient/config control, in a separate integration layer. The staged bring-up and the
    Cmod A7-35T versus Basys 3 comparison are in [docs/BOARD_BRINGUP_PLAN.md](docs/BOARD_BRINGUP_PLAN.md).

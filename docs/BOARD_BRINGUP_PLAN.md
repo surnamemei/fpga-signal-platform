@@ -3,8 +3,11 @@
 This plan takes the Gate 0 design to its first physical FPGA board. It is a plan only: no
 board-specific file exists in the repository yet, and nothing here changes simulation behaviour.
 
-**Entry condition.** Gate 0 is closed: the `verify` workflow is green on `main` and the run URL is
-recorded in [hardware_purchase_gate.md](hardware_purchase_gate.md), which then reads GATE OPEN.
+**Entry condition: met on 26 September 2026.** Gate 0 closed with CI
+[run 36228797521](https://github.com/surnamemei/fpga-signal-platform/actions/runs/36228797521) on commit `9c523b6`, and
+[hardware_purchase_gate.md](hardware_purchase_gate.md) reads GATE OPEN — FPGA BOARD ONLY. That gate
+covers the first development board alone. The Pmod I2S2 (Gate 2), the Analog Discovery 3, other
+instruments, custom PCBs and larger boards each need their own gate.
 
 **Exit condition.** Stage 6 passes. The board's output equals the Python golden model sample by sample
 for the 10,000 Gate 0 vectors and the directed patterns, and the run's provenance is recorded.
@@ -336,7 +339,10 @@ academic pricing, before ordering.
 
 ## Recommendation
 
-**The Cmod A7-35T matches this repository's current architecture better.**
+- **Primary: Cmod A7-35T**
+- **Alternative: Basys 3**
+
+The Cmod A7-35T is primary because it matches this repository's current architecture better:
 
 - It carries the same FPGA as the Basys 3, so resources and tool support are the same.
 - Its clock, LEDs, button, USB-UART and single Pmod cover every pin the plan and the Gate 2 Pmod I2S2
@@ -353,7 +359,7 @@ The trade-offs that come with it:
 - A DIP module that needs a breadboard or socket.
 - Two lines to add to its XDC.
 
-The Basys 3 is the better choice if any of these apply:
+Choose the alternative, the Basys 3, if any of these apply:
 - Standalone debugging without a PC matters more than cost.
 - The I2S2 and other Pmods must be connected at the same time.
 - The board is shared with a course that uses it.

@@ -1,6 +1,9 @@
-# Gate 0 status (26 September 2026)
+# Gate 0 status: complete (26 September 2026)
 
-Executed locally on Ubuntu 24.04 with the tool versions CI uses: Python 3.12, cocotb 2.1.0,
+Gate 0 closed with GitHub Actions [run 36228797521](https://github.com/surnamemei/fpga-signal-platform/actions/runs/36228797521) on commit `9c523b6`. FIR contract v1 is
+frozen at that commit, and the hardware purchase gate is open for the first FPGA board only.
+
+Local results, reproduced on a clean checkout of `9c523b6` with the tool versions CI uses: Python 3.12, cocotb 2.1.0,
 numpy 2.5.3, Icarus Verilog 12.0 (Ubuntu package 12.0-2build2), Verilator 5.020, Yosys 0.69 (YoWASP).
 
 | Gate 0 criterion | Result |
@@ -12,7 +15,7 @@ numpy 2.5.3, Icarus Verilog 12.0 (Ubuntu package 12.0-2build2), Verilator 5.020,
 | Directed edge-case tests | **PASS**: 12 cocotb tests x 3 coefficient builds = 36 of 36 |
 | Cross-simulator check | **PASS**: SystemVerilog testbench, 18,437 cycles per build, identical on Icarus and Verilator |
 | Test strength | **34 of 34** injected RTL bugs caught (`make mutation`) |
-| GitHub Actions | **not yet observed**: the workflow is fixed and every step was replayed locally under GitHub's shell; it needs a push |
+| GitHub Actions | **PASS**: [run 36228797521](https://github.com/surnamemei/fpga-signal-platform/actions/runs/36228797521) on commit `9c523b60f946074324a13861f055a70194aa692f`, every step successful |
 
 ## What was wrong in v0.1
 
